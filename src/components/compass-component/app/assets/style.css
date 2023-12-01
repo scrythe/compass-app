@@ -1,0 +1,86 @@
+@media (orientation: landscape) {
+    * {
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        width: 100vw;
+        height: 100vh;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(./background.jpg);
+        background-size: cover;
+      }
+      
+      .compass-body {
+        width: 40vw;
+        height: 40vw;
+        background-size: 40vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(./compass.png);
+      }
+      
+      #needle {
+        width: 38vw;
+        height: 38vw;
+        position: absolute;
+        background-image: url(./needle.png);
+        background-size: 38vw;
+        z-index: 2;
+      }
+      
+      .invisible {
+        display: none;
+      }
+}
+
+
+
+
+
+@media (orientation: portrait) {
+
+    * {
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        width: 100vw;
+        height: 100vh;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(./background-portrait.jpg);
+        background-size: cover;
+      }
+
+    #needle {
+        width: 55vw;
+        height: 55vw;
+        position: absolute;
+        background-image: url(./needle.png);
+        background-size: 55vw;
+        z-index: 2;
+      }
+
+      .compass-body {
+        width: 70vw;
+        height: 70vw;
+        background-size: 70vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(./compass.png);
+      }
+
+      .invisible {
+        display: none;
+      }
+  }
