@@ -1,12 +1,13 @@
-import type { Component } from "solid-js";
-import needleImg from "./assets/needle.png";
+import { For, type Component } from "solid-js";
+import ProjectCard from "./components/ProjectCard";
 import styles from "./App.module.css";
 
 const App: Component = () => {
+  const projectCards = ["Kompass", "Wasserwaage"];
   return (
-    <div class={styles.compassBody}>
-      <img src={needleImg} class={styles.needle} />
-    </div>
+    <section class={styles.cardSection}>
+      <For each={projectCards}>{(card) => <ProjectCard name={card} />}</For>
+    </section>
   );
 };
 
