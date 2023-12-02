@@ -1,23 +1,28 @@
 import { createServer } from "http";
-import { createClient } from "@deepgram/sdk";
-import { APIKEY } from "./privateConfig.json";
+import express from "express";
+import { Server } from "socket.io";
+import "dotenv/config";
 
-const deepgram = createClient(APIKEY);
+const { WEBHOST } = process.env;
+// import { createClient } from "@deepgram/sdk";
+// import { APIKEY } from "./privateConfig.json";
 
-async function transcribe() {
-  const { result, error } = await deepgram.listen.prerecorded.transcribeUrl(
-    { url: "https://dpgr.am/spacewalk.wav" },
-    { model: "base" },
-  );
-  if (error) console.error(error);
-  const resultJson = JSON.stringify(result);
-  console.log(resultJson);
-}
+// const deepgram = createClient(APIKEY);
 
-const server = createServer((_req, res) => {
-  res.writeHead(200);
-  res.end("yeet");
-  transcribe();
+// async function transcribe() {
+//   const dgConnection = deepgram.listen.live({ model: "base" });
+//   if (error) console.error(error);
+//   const resultJson = JSON.stringify(result);
+//   console.log(resultJson);
+// }
+
+const app = express();
+
+const server = createServer(app);
+const io = new Server(server, { cors: { origin: WEBHOST } });
+
+io.on("connection", () => {
+  console.log("a user connected");
 });
 
-server.listen(3000);
+server.listen(3001);
