@@ -1,6 +1,8 @@
 import { createSignal, type Component, Show } from "solid-js";
 import styles from "./Compass.module.css";
 import backgroundImg from "../../assets/background.jpg";
+import compassImg from "../../assets/compass.png";
+import needleImg from "../../assets/needle.png";
 
 const CompassComponent: Component = () => {
   const [isVisible, setVisible] = createSignal(false);
@@ -56,13 +58,17 @@ const CompassComponent: Component = () => {
 
   return (
     <main class={styles.main}>
-      <img class={styles.background} src={backgroundImg} alt="" />
+      <img class={styles.background} src={backgroundImg} alt="background" />
       <Show when={!isVisible()}>
         <button onClick={requestOrientationPerm}>Allow Compass</button>
       </Show>
       <Show when={isVisible()}>
-        <div ref={compassBody!} class={styles.compassBody}></div>
-        <div class={styles.invisible} id={styles.needle}></div>
+        <div ref={compassBody!} class={styles.compassBody}>
+          <img src={compassImg} alt="compass" />
+        </div>
+        <div class={styles.invisible} id={styles.needle}>
+          <img src={needleImg} alt="compass needle" />
+        </div>
       </Show>
     </main>
   );

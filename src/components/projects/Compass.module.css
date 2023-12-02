@@ -7,41 +7,20 @@
 }
 
 .main {
+  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.compassBody {
-  width: 40vw;
-  height: 40vw;
-  background-size: 40vw;
-  background-image: url(/src/assets/compass.png);
+.compassBody img {
+  width: 12rem;
 }
 
 #needle {
-  width: 38vw;
-  height: 38vw;
   position: absolute;
-  background-image: url(/src/assets/needle.png);
-  background-size: 38vw;
 }
 
-@media (orientation: portrait) {
-  .background {
-    rotate: 90deg;
-    width: unset;
-  }
-
-  #needle {
-    width: 55vw;
-    height: 55vw;
-    background-size: 55vw;
-  }
-
-  .compassBody {
-    width: 70vw;
-    height: 70vw;
-    background-size: 70vw;
-  }
+#needle img {
+  width: 12rem;
 }
