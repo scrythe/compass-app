@@ -1,6 +1,9 @@
-body {
-  background-image: url(/src/assets/background.jpg);
-  background-size: cover;
+.background {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 
 .main {
@@ -25,8 +28,9 @@ body {
 }
 
 @media (orientation: portrait) {
-  body {
-    background-image: url(/src/assets/background-portrait.jpg);
+  .background {
+    rotate: 90deg;
+    width: unset;
   }
 
   #needle {

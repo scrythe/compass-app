@@ -1,5 +1,6 @@
 import { createSignal, type Component, Show } from "solid-js";
 import styles from "./Compass.module.css";
+import backgroundImg from "../../assets/background.jpg";
 
 const CompassComponent: Component = () => {
   const [isVisible, setVisible] = createSignal(false);
@@ -55,6 +56,7 @@ const CompassComponent: Component = () => {
 
   return (
     <main class={styles.main}>
+      <img class={styles.background} src={backgroundImg} alt="" />
       <Show when={!isVisible()}>
         <button onClick={requestOrientationPerm}>Allow Compass</button>
       </Show>

@@ -4,5 +4,9 @@
   padding: 40px;
   border: none;
   border-radius: 10px;
+}
+
+.card a {
+  text-decoration: none;
   color: #adb5bd;
 }
