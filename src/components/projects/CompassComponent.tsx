@@ -44,7 +44,7 @@ const CompassComponent: Component = () => {
     if (iOS()) {
       if (typeof requestPermission !== "function") return;
       const permissionRes = await requestPermission();
-      if (permissionRes == "granted") return;
+      if (permissionRes == "denied") return;
       setVisible(true);
       addEventListener("deviceorientation", handleOrientationIOS, false);
     } else {
