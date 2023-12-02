@@ -3,7 +3,10 @@ import ProjectCard from "./components/ProjectCard";
 import styles from "./App.module.css";
 
 const App: Component = () => {
-  const projectCards = [{ name: "Kompass", path: "/Kompass" }];
+  const projectCards = [
+    { name: "Kompass", path: "/Kompass" },
+    { name: "Spracheingabe", path: "/Spracheingabe" },
+  ];
   return (
     <section class={styles.cardSection}>
       <For each={projectCards}>

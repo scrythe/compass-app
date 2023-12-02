@@ -1,0 +1,32 @@
+.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.voiceText {
+  background-color: #2b3035;
+  width: 100%;
+  flex-grow: 0.6;
+  padding: 2em;
+  color: #dee2e6;
+}
+
+.micBtn {
+  color: var(--bs-btn-hover-color);
+  background-color: transparent;
+  border: none;
+  padding: 20px;
+  border-radius: 2em;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.micBtn:hover {
+  background-color: #6c757d;
+}
+
+.micBtn img {
+  width: 4em;
+}
