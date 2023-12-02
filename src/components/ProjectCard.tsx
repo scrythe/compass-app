@@ -10,3 +10,4 @@ const ProjectCard: Component<{ name: string }> = (props) => {
 };
 
 export default ProjectCard;
+import Test from "./components/Test";
