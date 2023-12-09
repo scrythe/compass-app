@@ -1,38 +1,43 @@
-import { type Component } from "solid-js";
-import micIcon from "../../assets/microphone-342.svg";
+import { Show, type Component, createSignal, onMount } from "solid-js";
+import micIcon from "../../assets/mic.svg";
+import muteMicIcon from "../../assets/mute-mic.svg";
 import styles from "./VoiceInput.module.css";
 import VoiceInput from "../../services/voiceInput";
 // import { io } from "socket.io-client";
 
-// async function getMicrophone() {
-//   const userMedia = await navigator.mediaDevices.getUserMedia({
-//     audio: true,
-//   });
-//   return new MediaRecorder(userMedia);
-// }
-
-// function sendRecording(_microphone: MediaRecorder) {}
-//
-// async function micBtnPress() {
-//   sendRecording(microphone);
-// }
+function preloadImgs(imgUrls: string[]) {
+  const image = new Image();
+  imgUrls.forEach((url) => (image.src = url));
+}
 
 const VoiceInputComponent: Component = () => {
-  const voiceInput = new VoiceInput();
-  // const [getMicrophone, setMicrophone] = createSignal<MediaRecorder>();
+  const [isTalking, setTalking] = createSignal(false);
+  const voiceInput = new VoiceInput(setTalking);
+  onMount(() => preloadImgs([micIcon, muteMicIcon]));
   // io(import.meta.env.VITE_SOCKET_HOST);
-
   return (
     <main class={styles.main}>
       <div class={styles.voiceText}></div>
-      <button
-        class={styles.micBtn}
-        onClick={() => voiceInput.startMicrophone()}
-        type="button"
-        title="Start"
-      >
-        <img src={micIcon} alt="microphone" />
-      </button>
+      <Show when={isTalking()}>
+        <button
+          class={styles.micBtn}
+          onClick={() => voiceInput.stopMicrophone()}
+          type="button"
+          title="Stop"
+        >
+          <img src={micIcon} alt="microphone" />
+        </button>
+      </Show>
+      <Show when={!isTalking()}>
+        <button
+          class={styles.micBtn}
+          onClick={() => voiceInput.startMicrophone()}
+          type="button"
+          title="Start"
+        >
+          <img src={muteMicIcon} alt="mute microphone" />
+        </button>
+      </Show>
     </main>
   );
 };

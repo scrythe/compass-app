@@ -1,38 +1,53 @@
+import { Setter } from "solid-js";
+
 class VoiceInput {
   private microphone?: MediaRecorder;
+  private mediaStream?: MediaStream;
+  private talking: Setter<boolean>;
 
-  constructor() {}
+  constructor(talking: Setter<boolean>) {
+    this.talking = talking;
+  }
 
   private createMicrophone(): Promise<MediaRecorder> {
     return new Promise(async (resolve, reject) => {
-      const userMedia = await navigator.mediaDevices
+      const stream = await navigator.mediaDevices
         .getUserMedia({
           audio: true,
         })
         .catch(reject);
-      if (!userMedia) return;
-      resolve(new MediaRecorder(userMedia));
+      if (!stream) return;
+      this.mediaStream = stream;
+      resolve(new MediaRecorder(stream));
     });
   }
 
-  private async checkAndSetMicrophone(): Promise<MediaRecorder> {
+  private setAndGetMicrophone(): Promise<MediaRecorder> {
     return new Promise(async (resolve, reject) => {
-      if (this.microphone) return resolve(this.microphone);
       const microphone = await this.createMicrophone().catch(reject);
       if (!microphone) return;
       this.microphone = microphone;
-      return resolve(this.microphone);
+      resolve(this.microphone);
     });
   }
 
   async startMicrophone() {
-    const microphone = await this.checkAndSetMicrophone().catch((error) => {
+    const microphone = await this.setAndGetMicrophone().catch((error) => {
       if (error.name === "NotAllowedError")
         return alert("Requires Microphone Permissions in order to function");
       console.error(error);
     });
-    if (!microphone) return;
+
+    if (!microphone) return this.talking(false);
     microphone.start(2000);
+    this.talking(true);
+  }
+
+  stopMicrophone() {
+    this.microphone?.stop();
+    this.talking(false);
+    this.mediaStream?.getTracks().forEach((track) => track.stop());
+    this.microphone = undefined;
   }
 }
 
