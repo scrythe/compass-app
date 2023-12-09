@@ -7,12 +7,25 @@ import {
   LiveTranscriptionEvents,
   createClient,
 } from "@deepgram/sdk";
+import {
+  ClientToServerEvents,
+  InterServerEvents,
+  ServerToClientEvents,
+  SocketData,
+} from "socket-types";
+
+type SocketType = Socket<
+  ClientToServerEvents,
+  ServerToClientEvents,
+  InterServerEvents,
+  SocketData
+>;
 
 const { APIKEY, WEBHOST } = process.env;
 
 const deepgram: DeepgramClient = createClient(APIKEY!);
 
-async function setupDeepgram(socket: Socket) {
+async function setupDeepgram(socket: SocketType) {
   const connection = deepgram?.listen.live({
     language: "en",
     punctuate: true,
@@ -25,8 +38,8 @@ async function setupDeepgram(socket: Socket) {
   return connection;
 }
 
-function handleOpenedConnection(socket: Socket, connection: LiveClient) {
-  socket.on("packet-sent", (data) => connection.send(data));
+function handleOpenedConnection(socket: SocketType, connection: LiveClient) {
+  socket.on("packetSent", (data) => connection.send(data));
 
   connection.on(LiveTranscriptionEvents.Transcript, (data) => {
     const transcript = data.channel.alternatives[0].transcript ?? "";
@@ -40,7 +53,12 @@ async function closeConnection(connection: LiveClient) {
 }
 
 const server = createServer();
-const io = new Server(server, { cors: { origin: WEBHOST } });
+const io = new Server<
+  ClientToServerEvents,
+  ServerToClientEvents,
+  InterServerEvents,
+  SocketData
+>(server, { cors: { origin: WEBHOST } });
 
 io.on("connection", async (socket) => {
   const connection = await setupDeepgram(socket);

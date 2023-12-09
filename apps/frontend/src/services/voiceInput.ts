@@ -1,5 +1,12 @@
 import { Setter } from "solid-js";
 import { Socket, io } from "socket.io-client";
+import {
+  ClientToServerEvents,
+  InterServerEvents,
+  ServerToClientEvents,
+  SocketData,
+} from "socket-types";
+type SocketType = Socket<ServerToClientEvents, ClientToServerEvents>;
 
 class VoiceInput {
   private microphone?: MediaRecorder;
@@ -7,7 +14,7 @@ class VoiceInput {
   private talking: Setter<boolean>;
   private outputText: Setter<string>;
   private totalText: string;
-  private socket: Socket;
+  private socket: SocketType;
 
   constructor(talking: Setter<boolean>, outputText: Setter<string>) {
     this.talking = talking;
@@ -60,7 +67,7 @@ class VoiceInput {
 
   private sendData(microphone: MediaRecorder) {
     microphone.ondataavailable = (blob) => {
-      this.socket.emit("packet-sent", blob.data);
+      this.socket.emit("packetSent", blob.data);
       console.log(blob.data);
     };
   }

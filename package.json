@@ -1,0 +1,20 @@
+{
+  "name": "compass-app",
+  "version": "0.0.0",
+  "description": "compass app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scrythe/compass-app.git"
+  },
+  "keywords": [
+    "compass",
+    "app",
+    "javascript"
+  ],
+  "author": "Xaver Ortner, Magomed Alimkhanov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/scrythe/compass-app/issues"
+  },
+  "homepage": "https://github.com/scrythe/compass-app#readme"
+}

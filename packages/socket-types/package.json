@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "name": "socket-types",
+  "devDependencies": {
+    "typescript": "^5.3.2"
+  }
+}
