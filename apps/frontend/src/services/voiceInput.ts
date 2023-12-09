@@ -1,11 +1,6 @@
 import { Setter } from "solid-js";
 import { Socket, io } from "socket.io-client";
-import {
-  ClientToServerEvents,
-  InterServerEvents,
-  ServerToClientEvents,
-  SocketData,
-} from "socket-types";
+import { ClientToServerEvents, ServerToClientEvents } from "socket-types";
 type SocketType = Socket<ServerToClientEvents, ClientToServerEvents>;
 
 class VoiceInput {
@@ -68,13 +63,11 @@ class VoiceInput {
   private sendData(microphone: MediaRecorder) {
     microphone.ondataavailable = (blob) => {
       this.socket.emit("packetSent", blob.data);
-      console.log(blob.data);
     };
   }
 
   handleData() {
     this.socket.on("transcript", (data) => {
-      console.log(data);
       this.totalText += " " + data;
       this.outputText(this.totalText);
     });
@@ -82,16 +75,3 @@ class VoiceInput {
 }
 
 export default VoiceInput;
-
-// async functon askForMicPerm()
-
-// function sendRecording(_microphone: MediaRecorder) {}
-
-// async function micBtnPress() {
-//   const microphone = await createMicrophone();
-//   sendRecording(microphone);
-// }
-
-// function startMicrophone(microphone: MediaRecorder) {
-//   microphone.start();
-// }

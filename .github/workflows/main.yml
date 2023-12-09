@@ -23,6 +23,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build Project
         run: pnpm -r --filter='./apps/frontend' run build
+        env:
+          VITE_SOCKET_HOST: ${{ secrets.vite_socket_host }}
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.2
         with:
