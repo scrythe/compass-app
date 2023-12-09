@@ -1,12 +1,19 @@
 import { Setter } from "solid-js";
+import { Socket, io } from "socket.io-client";
 
 class VoiceInput {
   private microphone?: MediaRecorder;
   private mediaStream?: MediaStream;
   private talking: Setter<boolean>;
+  private outputText: Setter<string>;
+  private totalText: string;
+  private socket: Socket;
 
-  constructor(talking: Setter<boolean>) {
+  constructor(talking: Setter<boolean>, outputText: Setter<string>) {
     this.talking = talking;
+    this.outputText = outputText;
+    this.totalText = "";
+    this.socket = io(import.meta.env.VITE_SOCKET_HOST);
   }
 
   private createMicrophone(): Promise<MediaRecorder> {
@@ -39,8 +46,9 @@ class VoiceInput {
     });
 
     if (!microphone) return this.talking(false);
-    microphone.start(2000);
+    microphone.start(500);
     this.talking(true);
+    this.sendData(microphone);
   }
 
   stopMicrophone() {
@@ -48,6 +56,21 @@ class VoiceInput {
     this.talking(false);
     this.mediaStream?.getTracks().forEach((track) => track.stop());
     this.microphone = undefined;
+  }
+
+  private sendData(microphone: MediaRecorder) {
+    microphone.ondataavailable = (blob) => {
+      this.socket.emit("packet-sent", blob.data);
+      console.log(blob.data);
+    };
+  }
+
+  handleData() {
+    this.socket.on("transcript", (data) => {
+      console.log(data);
+      this.totalText += " " + data;
+      this.outputText(this.totalText);
+    });
   }
 }
 

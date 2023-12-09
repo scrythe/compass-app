@@ -3,21 +3,27 @@ import micIcon from "../../assets/mic.svg";
 import muteMicIcon from "../../assets/mute-mic.svg";
 import styles from "./VoiceInput.module.css";
 import VoiceInput from "../../services/voiceInput";
-// import { io } from "socket.io-client";
 
 function preloadImgs(imgUrls: string[]) {
-  const image = new Image();
-  imgUrls.forEach((url) => (image.src = url));
+  imgUrls.forEach((url) => {
+    const image = new Image();
+    image.src = url;
+  });
 }
 
 const VoiceInputComponent: Component = () => {
+  onMount(() => preloadImgs([micIcon]));
+
   const [isTalking, setTalking] = createSignal(false);
-  const voiceInput = new VoiceInput(setTalking);
-  onMount(() => preloadImgs([micIcon, muteMicIcon]));
-  // io(import.meta.env.VITE_SOCKET_HOST);
+  const [outputText, setOutputText] = createSignal("");
+  setOutputText("");
+
+  const voiceInput = new VoiceInput(setTalking, setOutputText);
+  voiceInput.handleData();
+
   return (
     <main class={styles.main}>
-      <div class={styles.voiceText}></div>
+      <div class={styles.voiceText}>{outputText()}</div>
       <Show when={isTalking()}>
         <button
           class={styles.micBtn}
