@@ -22,6 +22,7 @@ async function setupDeepgram(socket: Socket) {
   connection.on(LiveTranscriptionEvents.Open, () =>
     handleOpenedConnection(socket, connection),
   );
+  return connection;
 }
 
 function handleOpenedConnection(socket: Socket, connection: LiveClient) {
@@ -33,12 +34,18 @@ function handleOpenedConnection(socket: Socket, connection: LiveClient) {
   });
 }
 
+async function closeConnection(connection: LiveClient) {
+  connection.finish();
+  connection.removeAllListeners();
+}
+
 const server = createServer();
 const io = new Server(server, { cors: { origin: WEBHOST } });
 
-io.on("connection", (socket) => {
-  setupDeepgram(socket);
+io.on("connection", async (socket) => {
+  const connection = await setupDeepgram(socket);
   console.log("a user connected");
+  socket.on("disconnect", () => closeConnection(connection));
 });
 
 server.listen(3001);
