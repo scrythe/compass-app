@@ -1,4 +1,5 @@
 {
+  "name": "frontend",
   "scripts": {
     "start": "vite",
     "dev": "vite --host",
