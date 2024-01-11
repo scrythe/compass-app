@@ -21,7 +21,7 @@ type SocketType = Socket<
   SocketData
 >;
 
-const { APIKEY, WEBHOST } = process.env;
+const { APIKEY, WEBHOST, PORT } = process.env;
 
 const deepgram: DeepgramClient = createClient(APIKEY!);
 
@@ -66,4 +66,4 @@ io.on("connection", async (socket) => {
   socket.on("disconnect", () => closeConnection(connection));
 });
 
-server.listen(3001);
+server.listen(PORT);
