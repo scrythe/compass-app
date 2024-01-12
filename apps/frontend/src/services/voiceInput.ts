@@ -9,12 +9,19 @@ class VoiceInput {
   private talking: Setter<boolean>;
   private outputText: Setter<string>;
   private totalText: string;
+  private localText: string;
   private socket: SocketType;
 
   constructor(talking: Setter<boolean>, outputText: Setter<string>) {
     this.talking = talking;
     this.outputText = outputText;
     this.totalText = "";
+    let localText = localStorage.getItem("localText");
+    if (!localText) {
+      localStorage.setItem("localText", "");
+      localText = "";
+    }
+    this.localText = localText;
     this.socket = io(import.meta.env.VITE_SOCKET_HOST);
   }
 
@@ -69,6 +76,8 @@ class VoiceInput {
   handleData() {
     this.socket.on("transcript", (data) => {
       this.totalText += " " + data;
+      this.localText += " " + data;
+      localStorage.setItem("localText", this.localText);
       this.outputText(this.totalText);
     });
   }
