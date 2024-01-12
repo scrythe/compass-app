@@ -1,18 +1,18 @@
-import { For, type Component } from "solid-js";
-import ProjectCard from "./components/ProjectCard";
+import { createSignal, createMemo, type Component } from "solid-js";
 import styles from "./App.module.css";
 
-const App: Component = () => {
-  const projectCards = [
-    { name: "Kompass", path: "/Kompass" },
-    { name: "Spracheingabe", path: "/Spracheingabe" },
-  ];
+const App: Component<{ children: HTMLElement }> = (props) => {
+  const [getStatus, setStatus] = createSignal(navigator.onLine);
+  const getStatusString = createMemo(() =>
+    getStatus() ? "online" : "offline",
+  );
+  window.addEventListener("offline", () => setStatus(false));
+  window.addEventListener("online", () => setStatus(true));
   return (
-    <section class={styles.cardSection}>
-      <For each={projectCards}>
-        {(card) => <ProjectCard name={card.name} path={card.path} />}
-      </For>
-    </section>
+    <>
+      <div class={`${styles.status} ${styles[getStatusString()]}`}></div>
+      {props.children}
+    </>
   );
 };
 
