@@ -6,7 +6,7 @@ import deleteImg from "../../assets/delete.png"
 
 const CompassComponent: Component = () => {
   const [isVisible, setVisible] = createSignal(false);
-  let compassBody: HTMLDivElement;
+  let compassBody: HTMLImageElement;
   let storedVals: HTMLDivElement;
 
   const iOS = () => {
@@ -113,9 +113,9 @@ const CompassComponent: Component = () => {
         <button onClick={requestOrientationPerm}>Allow Compass</button>
       </Show>
       <Show when={isVisible()}>
-        <div ref={compassBody!} class={styles.compassBody}>
+        <div class={styles.compassBody}>
           <img src={compassImg} alt="compass" />
-          <img src={needleImg} alt="compass needle" id={styles.needle} />
+          <img src={needleImg} ref={compassBody!} alt="compass needle" id={styles.needle} />
           <button id={styles.saveBtn} onclick={saveOrientation}>Save</button>
         </div>
         <div ref={storedVals!} id={styles.storedVals}></div>
