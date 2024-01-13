@@ -1,7 +1,7 @@
-import { createSignal, createMemo, type Component } from "solid-js";
+import { createSignal, createMemo, Component, JSX } from "solid-js";
 import styles from "./App.module.css";
 
-const App: Component<{ children: HTMLElement }> = (props) => {
+const App: Component<{ children: JSX.Element }> = (props) => {
   const [getStatus, setStatus] = createSignal(navigator.onLine);
   const getStatusString = createMemo(() =>
     getStatus() ? "online" : "offline",

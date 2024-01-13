@@ -1,4 +1,4 @@
-import { For, type Component } from "solid-js";
+import { For, Component } from "solid-js";
 import ProjectCard from "./ProjectCard";
 import styles from "./Home.module.css";
 
