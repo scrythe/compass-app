@@ -1,26 +1,57 @@
-.background {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
 
 .main {
   flex-grow: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.compassBody {
+  width: fit-content;
+  height: fit-content;
+  position: relative; 
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .compassBody img {
-  width: 12rem;
-}
-
-#needle {
   position: absolute;
+  width: 12rem;
 }
 
 #needle img {
+  position: absolute;
   width: 12rem;
+}
+
+#saveBtn{
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem;
+}
+
+#storedVals{
+  list-style-type: none;
+  width: 10rem;
+  height: 12rem;
+  overflow-y: scroll;
+  color: black;
+  background-color: lightgray;
+  border-radius: 1rem;
+  padding: 1rem;
+  z-index: 3;
+}
+
+#storedVals > li{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+#storedVals > li:not(:last-child){
+  border-bottom: grey solid 1px;
 }
