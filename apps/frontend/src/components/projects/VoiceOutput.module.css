@@ -8,7 +8,7 @@
 
 .voiceSection {
   width: 100%;
-  flex-grow: 0.4;
+  flex-grow: 0.5;
   display:flex;
   flex-direction:column;
   row-gap: 2em;
@@ -19,12 +19,32 @@
   width: 100%;
   padding: 2em;
   color: #dee2e6;
+  /* height: 100%; */
   flex-grow: 1;
+  flex-basis: 0;
+  overflow: scroll;
 }
 
 .inputField {
   background-color: #49515A;
   font-size: 1em;
+  padding:1em;
+}
+
+.speak {
+  background-color: transparent;
+  border: none;
+  padding: 20px;
+  border-radius: 2em;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.speak:hover {
+  background-color: #6c757d;
+}
+
+.speak img {
+  width: 4em;
 }
 
 /* .micBtn { */
