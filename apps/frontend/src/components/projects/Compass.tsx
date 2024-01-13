@@ -114,7 +114,7 @@ const CompassComponent: Component = () => {
       </Show>
       <Show when={isVisible()}>
         <div class={styles.compassBody}>
-          <img src={compassImg} alt="compass" />
+          <img src={compassImg} alt="compass"/>
           <img src={needleImg} ref={compassBody!} alt="compass needle" id={styles.needle} />
           <button id={styles.saveBtn} onclick={saveOrientation}>Save</button>
         </div>
