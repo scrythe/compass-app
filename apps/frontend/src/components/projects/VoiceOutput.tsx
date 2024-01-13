@@ -12,19 +12,25 @@ function preloadImgs(imgUrls: string[]) {
 
 const VoiceOutput: Component = () => {
   onMount(() => preloadImgs([volumeOn]));
-  const voiceTexts = ["Hello Friend", "Yeah boii", "Hehehehaw"];
+  let inputField: HTMLInputElement;
   const [getSpeak, setSpeak] = createSignal(false);
-  voiceTexts.push(...voiceTexts);
-  voiceTexts.push(...voiceTexts);
-  voiceTexts.push(...voiceTexts);
-  voiceTexts.push(...voiceTexts);
+  const [getVoiceTexts, setVoiceTexts] = createSignal<string[]>([]);
+
+  const saveMessage = (event: Event) => {
+    event.preventDefault();
+    setVoiceTexts([inputField.value, ...getVoiceTexts()]);
+  };
   return (
     <main class={styles.main}>
       <section class={styles.voiceSection}>
         <div class={styles.outputHistory}>
-          <For each={voiceTexts}>{(voiceText) => <div>{voiceText}</div>}</For>
+          <For each={getVoiceTexts()}>
+            {(voiceText) => <div>{voiceText}</div>}
+          </For>
         </div>
-        <input class={styles.inputField} />
+        <form class={styles.inputForm} onSubmit={saveMessage}>
+          <input ref={inputField!} class={styles.inputField} />
+        </form>
       </section>
       <Show
         when={getSpeak()}

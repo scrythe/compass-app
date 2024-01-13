@@ -19,16 +19,21 @@
   width: 100%;
   padding: 2em;
   color: #dee2e6;
-  /* height: 100%; */
   flex-grow: 1;
   flex-basis: 0;
-  overflow: scroll;
+  overflow-y: scroll;
+}
+
+.inputForm {
+  display: flex;
+  justify-content: center;
 }
 
 .inputField {
   background-color: #49515A;
   font-size: 1em;
-  padding:1em;
+  padding: 1em;
+  width: 100%
 }
 
 .speak {
