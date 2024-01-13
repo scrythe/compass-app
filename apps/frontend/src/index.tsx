@@ -4,8 +4,9 @@ import { Router, Route, Routes } from "@solidjs/router";
 import "./index.css";
 import App from "./App";
 import Home from "./components/Home";
-import CompassComponent from "./components/projects/Compass";
-import VoiceInputComponent from "./components/projects/VoiceInput";
+import Compass from "./components/projects/Compass";
+import VoiceInput from "./components/projects/VoiceInput";
+import VoiceOutput from "./components/projects/VoiceOutput";
 
 const root = document.getElementById("root");
 
@@ -15,8 +16,9 @@ render(
       <Router>
         <Routes>
           <Route path="/*" component={Home} />
-          <Route path="/Kompass" component={CompassComponent} />
-          <Route path="/Spracheingabe" component={VoiceInputComponent} />
+          <Route path="/Kompass" component={Compass} />
+          <Route path="/Spracheingabe" component={VoiceInput} />
+          <Route path="/Sprachausgabe" component={VoiceOutput} />
         </Routes>
       </Router>
     </App>

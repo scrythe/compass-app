@@ -6,6 +6,7 @@ const App: Component = () => {
   const projectCards = [
     { name: "Kompass", path: "/Kompass" },
     { name: "Spracheingabe", path: "/Spracheingabe" },
+    { name: "Sprachausgabe", path: "/Sprachausgabe" },
   ];
   return (
     <>
