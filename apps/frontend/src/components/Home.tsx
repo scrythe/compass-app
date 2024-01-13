@@ -1,4 +1,4 @@
-import { For, type Component } from "solid-js";
+import { For, Component } from "solid-js";
 import ProjectCard from "./ProjectCard";
 import styles from "./Home.module.css";
 
@@ -6,6 +6,7 @@ const App: Component = () => {
   const projectCards = [
     { name: "Kompass", path: "/Kompass" },
     { name: "Spracheingabe", path: "/Spracheingabe" },
+    { name: "Sprachausgabe", path: "/Sprachausgabe" },
   ];
   return (
     <>

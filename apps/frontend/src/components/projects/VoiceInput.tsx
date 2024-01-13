@@ -1,4 +1,4 @@
-import { Show, type Component, createSignal, onMount } from "solid-js";
+import { Show, Component, createSignal, onMount } from "solid-js";
 import micIcon from "../../assets/mic.svg";
 import muteMicIcon from "../../assets/mute-mic.svg";
 import styles from "./VoiceInput.module.css";

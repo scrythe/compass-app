@@ -1,4 +1,4 @@
-import { createSignal, type Component, Show } from "solid-js";
+import { createSignal, Component, Show } from "solid-js";
 import styles from "./Compass.module.css";
 import compassImg from "../../assets/compass.png";
 import needleImg from "../../assets/needle.png";
