@@ -1,7 +1,7 @@
-
 .main {
-  flex-grow: 1;
   display: flex;
+  flex-direction: column;
+  flex: 1;
   justify-content: space-around;
   align-items: center;
 }
@@ -17,12 +17,12 @@
 
 .compassBody img {
   position: absolute;
-  width: 12rem;
+  width: 18rem;
 }
 
 #needle img {
   position: absolute;
-  width: 12rem;
+  width: 18rem;
 }
 
 
@@ -30,13 +30,13 @@
   position: relative;
   width: 2rem;
   height: 2rem;
-  border-radius: 1rem;
+  border-radius: 2rem;
 }
 
 #storedVals{
   list-style-type: none;
   width: 10rem;
-  height: 12rem;
+  height: 18rem;
   overflow-y: scroll;
   color: black;
   background-color: lightgray;
@@ -51,6 +51,7 @@
   justify-content: space-around;
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
+  cursor: pointer;
 }
 
 #storedVals > li:not(:last-child){

@@ -67,7 +67,7 @@ const CompassComponent: Component = () => {
   const populateListLocal = () =>{
     for(let i = 0; i < localStorage.length; i++)
     {
-      if(localStorage.key(i) != "device-id")
+      if(localStorage.key(i)?.includes("compass"))
         {
         let listitem = document.createElement("li");
         let deleteIcon = document.createElement("img");
@@ -84,7 +84,7 @@ const CompassComponent: Component = () => {
     }
 
   const deleteLS = (x:string) =>{
-    localStorage.removeItem(x)
+    localStorage.removeItem(x);
     storedVals.replaceChildren()
     populateListLocal()
   }
@@ -102,7 +102,7 @@ const CompassComponent: Component = () => {
 
     }
     else{
-      localStorage.setItem(localStorage.length.toString(), orientation.toString())
+      localStorage.setItem("compass-" + localStorage.length.toString(), orientation.toString())
       populateListLocal();
     }
     }
@@ -116,7 +116,7 @@ const CompassComponent: Component = () => {
         <div class={styles.compassBody}>
           <img src={compassImg} alt="compass"/>
           <img src={needleImg} ref={compassBody!} alt="compass needle" id={styles.needle} />
-          <button id={styles.saveBtn} onclick={saveOrientation}>Save</button>
+          <button id={styles.saveBtn} onclick={saveOrientation}></button>
         </div>
         <div ref={storedVals!} id={styles.storedVals}></div>
       </Show>
