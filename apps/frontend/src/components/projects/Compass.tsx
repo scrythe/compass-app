@@ -51,9 +51,6 @@ const CompassComponent: Component = () => {
     return rotation;
   };
 
-  const turnCompass = (typeOfEvent: string) => {
-    compassBody.style.rotate = "-" + adjustRotation(handleOrientationAND(new DeviceOrientationEvent(typeOfEvent))) + "deg";
-  } 
 
   const requestOrientationPerm = async () => {
     if (iOS()) {
@@ -61,10 +58,10 @@ const CompassComponent: Component = () => {
       const permissionRes = await requestPermission();
       if (permissionRes == "denied") return;
       setVisible(true);
-      addEventListener("deviceorientation", () => turnCompass("deviceorientation"), false);
+      addEventListener("deviceorientation", ()=>{compassBody.style.rotate = "-" + adjustRotation(handleOrientationIOS(new DeviceOrientationEvent("deviceorientation"))) + "deg";}, false);
     } else {
       setVisible(true);
-      addEventListener("deviceorientationabsolute", () => turnCompass("deviceorientationabsolute"), true);
+      addEventListener("deviceorientationabsolute", ()=>{compassBody.style.rotate = "-" + adjustRotation(handleOrientationAND(new DeviceOrientationEvent("deviceorientationabsolute"))) + "deg";}, true);
     }
   };
 
