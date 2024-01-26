@@ -47,8 +47,7 @@ const CompassComponent: Component = () => {
   };
 
   const handleOrientationAND = (event: DeviceOrientationEvent):number => {
-    // @ts-ignore
-    let rotation = event.webkitCompassHeading;
+    let rotation = Math.abs(event.alpha! - 360);
     return rotation;
   };
 
@@ -62,7 +61,7 @@ const CompassComponent: Component = () => {
       addEventListener("deviceorientation", (event: DeviceOrientationEvent) => {compassBody.style.rotate = "-" + adjustRotation(handleOrientationIOS(event)) + "deg";}, false);
     } else {
       setVisible(true);
-      addEventListener("deviceorientation", ( event: DeviceOrientationEvent)=>{compassBody.style.rotate = "-" + adjustRotation(handleOrientationAND(event)) + "deg";}, true);
+      addEventListener("deviceorientationabsolute", ( event: DeviceOrientationEvent)=>{compassBody.style.rotate = "-" + adjustRotation(handleOrientationAND(event)) + "deg";}, true);
     }
   };
 
