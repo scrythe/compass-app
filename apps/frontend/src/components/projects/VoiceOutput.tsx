@@ -1,17 +1,9 @@
-import { Component, For, Show, createSignal, onMount } from "solid-js";
+import { Component, For, Show, createSignal } from "solid-js";
 import styles from "./VoiceOutput.module.css";
-import volumeOn from "../../assets/volume-on.svg";
-import volumeOff from "../../assets/volume-off.svg";
-
-function preloadImgs(imgUrls: string[]) {
-  imgUrls.forEach((url) => {
-    const image = new Image();
-    image.src = url;
-  });
-}
+import VolumeOn from "../../assets/volume-on";
+import VolumeOff from "../../assets/volume-off";
 
 const VoiceOutput: Component = () => {
-  onMount(() => preloadImgs([volumeOn]));
   let inputField: HTMLInputElement;
   const [getSpeak, setSpeak] = createSignal(false);
   const [getVoiceTexts, setVoiceTexts] = createSignal<string[]>([]);
@@ -41,7 +33,7 @@ const VoiceOutput: Component = () => {
             onClick={() => setSpeak(true)}
             title="Start"
           >
-            <img src={volumeOff} alt="start speaking" />
+            <VolumeOff />
           </button>
         }
       >
@@ -51,7 +43,7 @@ const VoiceOutput: Component = () => {
           onClick={() => setSpeak(false)}
           title="Start"
         >
-          <img src={volumeOn} alt="stop speaking" />
+          <VolumeOn />
         </button>
       </Show>
     </main>
