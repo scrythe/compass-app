@@ -51,18 +51,23 @@ const CompassComponent: Component = () => {
     return rotation;
   };
 
+  const turnCompass = (typeOfEvent: string) => {
+    compassBody.style.rotate = "-" + adjustRotation(handleOrientationAND(new DeviceOrientationEvent(typeOfEvent))) + "deg";
+  } 
+
   const requestOrientationPerm = async () => {
     if (iOS()) {
       if (typeof requestPermission !== "function") return;
       const permissionRes = await requestPermission();
       if (permissionRes == "denied") return;
       setVisible(true);
-      addEventListener("deviceorientation", ()=>{compassBody.style.rotate = "-" + adjustRotation(handleOrientationIOS(new DeviceOrientationEvent("deviceorientation"))) + "deg";}, false);
+      addEventListener("deviceorientation", () => turnCompass("deviceorientation"), false);
     } else {
       setVisible(true);
-      addEventListener("deviceorientationabsolute", ()=>{compassBody.style.rotate = "-" + adjustRotation(handleOrientationAND(new DeviceOrientationEvent("deviceorientationabsolute"))) + "deg";}, true);
+      addEventListener("deviceorientationabsolute", () => turnCompass("deviceorientationabsolute"), true);
     }
   };
+
 
   const populateListLocal = () =>{
     for(let i = 0; i < localStorage.length; i++)
@@ -85,11 +90,13 @@ const CompassComponent: Component = () => {
 
   const deleteLS = (x:string) =>{
     localStorage.removeItem(x);
+    // @ts-ignore
     storedVals.replaceChildren()
     populateListLocal()
   }
 
   const saveOrientation = ()=>{
+    // @ts-ignore
     storedVals.replaceChildren()
     let orientation: number;
     if(iOS()) orientation = handleOrientationIOS(new DeviceOrientationEvent("deviceorientation"));
