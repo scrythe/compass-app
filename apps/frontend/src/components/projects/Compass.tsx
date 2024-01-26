@@ -58,10 +58,10 @@ const CompassComponent: Component = () => {
       const permissionRes = await requestPermission();
       if (permissionRes == "denied") return;
       setVisible(true);
-      addEventListener("deviceorientation", function(){compassBody.style.rotate = "-" + adjustRotation(handleOrientationIOS(new DeviceOrientationEvent("deviceorientation"))) + "deg";}, false);
+      addEventListener("deviceorientation", (event: DeviceOrientationEvent) => {compassBody.style.rotate = "-" + adjustRotation(handleOrientationIOS(event)) + "deg";}, false);
     } else {
       setVisible(true);
-      addEventListener("deviceorientationabsolute", function(){compassBody.style.rotate = "-" + adjustRotation(handleOrientationAND(new DeviceOrientationEvent("deviceorientationabsolute"))) + "deg";}, true);
+      addEventListener("deviceorientationabsolute", ( event: DeviceOrientationEvent)=>{compassBody.style.rotate = "-" + adjustRotation(handleOrientationAND(event)) + "deg";}, true);
     }
   };
 
