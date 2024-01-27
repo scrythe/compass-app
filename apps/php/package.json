@@ -1,0 +1,6 @@
+{
+  "name": "php",
+  "scripts": {
+    "dev": "php -S localhost:4000"
+  }
+}

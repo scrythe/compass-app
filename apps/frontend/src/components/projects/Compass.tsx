@@ -3,6 +3,7 @@ import styles from "./Compass.module.css";
 import compassImg from "../../assets/compass.png";
 import needleImg from "../../assets/needle.png";
 import deleteImg from "../../assets/delete.png";
+import { getOrientations, saveOrientationDB } from "../../services/php";
 
 let COMPASS_ORIENTATION = 0;
 
@@ -35,12 +36,12 @@ const CompassComponent: Component = () => {
 
   const adjustRotation = (rotation: number) => {
     let orientation = screen.orientation.type;
-    rotation = Math.round(rotation)
+    rotation = Math.round(rotation);
 
     if (orientation == "landscape-primary") rotation += 90;
     if (orientation == "landscape-secondary") rotation += 270;
 
-    if(rotation >= 360) rotation -= 360;
+    if (rotation >= 360) rotation -= 360;
 
     return rotation;
   };
@@ -57,7 +58,7 @@ const CompassComponent: Component = () => {
   };
 
   const requestOrientationPerm = async () => {
-    localStorage.clear()
+    localStorage.clear();
     if (iOS()) {
       if (typeof requestPermission !== "function") return;
       const permissionRes = await requestPermission();
@@ -85,16 +86,16 @@ const CompassComponent: Component = () => {
   };
 
   const populateListLocal = () => {
-    storedVals.innerHTML = ""; 
+    storedVals.innerHTML = "";
     const compassKeys = Object.keys(localStorage).filter((key) =>
-      key.includes("compass")
+      key.includes("compass"),
     );
     compassKeys.sort((a, b) => {
       const numA = parseInt(a.replace("compass-", ""), 10);
       const numB = parseInt(b.replace("compass-", ""), 10);
       return numA - numB;
     });
-  
+
     // Populate the list
     compassKeys.forEach((key) => {
       const listitem = document.createElement("li");
@@ -104,13 +105,12 @@ const CompassComponent: Component = () => {
       listitem.innerHTML = localStorage.getItem(key) + "°";
       listitem.appendChild(deleteIcon);
       storedVals?.appendChild(listitem);
-  
+
       deleteIcon.addEventListener("click", () => {
         deleteLS(key);
       });
     });
   };
-  
 
   const deleteLS = (x: string) => {
     localStorage.removeItem(x);
@@ -123,17 +123,31 @@ const CompassComponent: Component = () => {
   const saveOrientation = () => {
     // @ts-ignore
     storedVals.replaceChildren();
-
-    if (!localStorage.getItem("device-id"))
+    let deviceId = localStorage.getItem("device-id");
+    if (!deviceId) {
       localStorage.setItem("device-id", generateDeviceID());
 
-    if (!navigator.onLine) {
+      deviceId = localStorage.getItem("device-id") as string;
+    }
+
+    if (navigator.onLine) {
+      saveOrientationDB(
+        parseInt(deviceId),
+        localStorage.length,
+        Math.round(COMPASS_ORIENTATION),
+      ).then(async () => {
+        const data = await getOrientations();
+        console.log(data);
+      });
     } else {
-      localStorage.setItem("compass-" + keyCounter.toString(), COMPASS_ORIENTATION.toString());
+      localStorage.setItem(
+        "compass-" + keyCounter.toString(),
+        COMPASS_ORIENTATION.toString(),
+      );
       keyCounter++;
       populateListLocal();
     }
-    console.log(localStorage)
+    console.log(localStorage);
   };
 
   return (
@@ -151,7 +165,6 @@ const CompassComponent: Component = () => {
             id={styles.needle}
             onclick={saveOrientation}
           />
-         
         </div>
         <div ref={storedVals!} id={styles.storedVals}></div>
       </Show>
