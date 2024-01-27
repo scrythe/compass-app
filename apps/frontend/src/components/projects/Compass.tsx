@@ -35,9 +35,12 @@ const CompassComponent: Component = () => {
 
   const adjustRotation = (rotation: number) => {
     let orientation = screen.orientation.type;
+    rotation = Math.round(rotation)
 
     if (orientation == "landscape-primary") rotation += 90;
     if (orientation == "landscape-secondary") rotation += 270;
+
+    if(rotation >= 360) rotation -= 360;
 
     return rotation;
   };
@@ -117,7 +120,7 @@ const CompassComponent: Component = () => {
     } else {
       localStorage.setItem(
         "compass-" + localStorage.length.toString(),
-        Math.round(COMPASS_ORIENTATION).toString(),
+        COMPASS_ORIENTATION.toString(),
       );
       populateListLocal();
     }
