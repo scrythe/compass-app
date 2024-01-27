@@ -2,7 +2,9 @@ import { createSignal, Component, Show } from "solid-js";
 import styles from "./Compass.module.css";
 import compassImg from "../../assets/compass.png";
 import needleImg from "../../assets/needle.png";
-import deleteImg from "../../assets/delete.png"
+import deleteImg from "../../assets/delete.png";
+
+let COMPASS_ORIENTATION = 0;
 
 const CompassComponent: Component = () => {
   const [isVisible, setVisible] = createSignal(false);
@@ -17,7 +19,7 @@ const CompassComponent: Component = () => {
   };
 
   function generateDeviceID() {
-    let result = '';
+    let result = "";
     for (let i = 0; i < 30; i++) {
       result += Math.floor(Math.random() * 10);
     }
@@ -40,17 +42,16 @@ const CompassComponent: Component = () => {
     return rotation;
   };
 
-  const handleOrientationIOS = (event: DeviceOrientationEvent):number => {
+  const handleOrientationIOS = (event: DeviceOrientationEvent): number => {
     // @ts-ignore
     let rotation = event.webkitCompassHeading;
     return rotation;
   };
 
-  const handleOrientationAND = (event: DeviceOrientationEvent):number => {
+  const handleOrientationAND = (event: DeviceOrientationEvent): number => {
     let rotation = Math.abs(event.alpha! - 360);
     return rotation;
   };
-
 
   const requestOrientationPerm = async () => {
     if (iOS()) {
@@ -58,58 +59,69 @@ const CompassComponent: Component = () => {
       const permissionRes = await requestPermission();
       if (permissionRes == "denied") return;
       setVisible(true);
-      addEventListener("deviceorientation", (event: DeviceOrientationEvent) => {compassBody.style.rotate = "-" + adjustRotation(handleOrientationIOS(event)) + "deg";}, false);
+      addEventListener(
+        "deviceorientation",
+        (event: DeviceOrientationEvent) => {
+          COMPASS_ORIENTATION = handleOrientationIOS(event);
+          compassBody.style.rotate = adjustRotation(COMPASS_ORIENTATION) + "deg";
+        },
+        false,
+      );
     } else {
       setVisible(true);
-      addEventListener("deviceorientationabsolute", ( event: DeviceOrientationEvent)=>{compassBody.style.rotate = "-" + adjustRotation(handleOrientationAND(event)) + "deg";}, true);
+      addEventListener(
+        "deviceorientationabsolute",
+        (event: DeviceOrientationEvent) => {
+          COMPASS_ORIENTATION =handleOrientationAND(event);
+          compassBody.style.rotate = adjustRotation(COMPASS_ORIENTATION) + "deg";
+        },
+        true,
+      );
     }
   };
 
-
-  const populateListLocal = () =>{
-    for(let i = 0; i < localStorage.length; i++)
-    {
-      if(localStorage.key(i)?.includes("compass"))
-        {
+  const populateListLocal = () => {
+    for (let i = 0; i < localStorage.length; i++) {
+      if (localStorage.key(i)?.includes("compass")) { 
         let listitem = document.createElement("li");
         let deleteIcon = document.createElement("img");
         deleteIcon.src = deleteImg;
         deleteIcon.height = 20;
         // @ts-ignore
         listitem.innerHTML = localStorage.getItem(localStorage.key(i));
-        listitem.appendChild(deleteIcon)
+        listitem.appendChild(deleteIcon);
         storedVals?.appendChild(listitem);
         // @ts-ignore
-        deleteIcon.addEventListener("click", () => {deleteLS(localStorage.key(i)?.toString())})
-        }
+        deleteIcon.addEventListener("click", () => {
+          deleteLS(localStorage.key(i)?.toString());
+        });
       }
     }
+  };
 
-  const deleteLS = (x:string) =>{
+  const deleteLS = (x: string) => {
     localStorage.removeItem(x);
     // @ts-ignore
-    storedVals.replaceChildren()
-    populateListLocal()
-  }
+    storedVals.replaceChildren();
+    populateListLocal();
+  };
 
-  const saveOrientation = ()=>{
+  const saveOrientation = (event: DeviceOrientationEvent) => {
     // @ts-ignore
-    storedVals.replaceChildren()
-    let orientation: number;
-    if(iOS()) orientation = handleOrientationIOS(new DeviceOrientationEvent("deviceorientation"));
-    else orientation = handleOrientationAND(new DeviceOrientationEvent("deviceorientationabsolute"));
+    storedVals.replaceChildren();
 
-    if(!localStorage.getItem("device-id")) localStorage.setItem("device-id", generateDeviceID())
+    if (!localStorage.getItem("device-id"))
+      localStorage.setItem("device-id", generateDeviceID());
 
-    if(!navigator.onLine)
-    {
-
-    }
-    else{
-      localStorage.setItem("compass-" + localStorage.length.toString(), orientation.toString())
+    if (!navigator.onLine) {
+    } else {
+      localStorage.setItem(
+        "compass-" + localStorage.length.toString(),
+        Math.round(COMPASS_ORIENTATION).toString(),
+      );
       populateListLocal();
     }
-    }
+  };
 
   return (
     <main class={styles.main}>
@@ -118,8 +130,13 @@ const CompassComponent: Component = () => {
       </Show>
       <Show when={isVisible()}>
         <div class={styles.compassBody}>
-          <img src={compassImg} alt="compass"/>
-          <img src={needleImg} ref={compassBody!} alt="compass needle" id={styles.needle} />
+          <img src={compassImg} alt="compass" />
+          <img
+            src={needleImg}
+            ref={compassBody!}
+            alt="compass needle"
+            id={styles.needle}
+          />
           <button id={styles.saveBtn} onclick={saveOrientation}></button>
         </div>
         <div ref={storedVals!} id={styles.storedVals}></div>
