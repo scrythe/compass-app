@@ -136,8 +136,9 @@ const CompassComponent: Component = () => {
             ref={compassBody!}
             alt="compass needle"
             id={styles.needle}
+            onclick={saveOrientation}
           />
-          <button id={styles.saveBtn} onclick={saveOrientation}></button>
+         
         </div>
         <div ref={storedVals!} id={styles.storedVals}></div>
       </Show>
