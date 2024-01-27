@@ -85,14 +85,10 @@ const CompassComponent: Component = () => {
   };
 
   const populateListLocal = () => {
-    storedVals.innerHTML = ""; // Clear the content before populating
-  
-    // Get all localStorage keys that include "compass"
+    storedVals.innerHTML = ""; 
     const compassKeys = Object.keys(localStorage).filter((key) =>
       key.includes("compass")
     );
-  
-    // Sort the keys based on the number after "compass-"
     compassKeys.sort((a, b) => {
       const numA = parseInt(a.replace("compass-", ""), 10);
       const numB = parseInt(b.replace("compass-", ""), 10);
@@ -105,7 +101,7 @@ const CompassComponent: Component = () => {
       const deleteIcon = document.createElement("img");
       deleteIcon.src = deleteImg;
       deleteIcon.height = 20;
-      listitem.innerHTML = localStorage.getItem(key);
+      listitem.innerHTML = localStorage.getItem(key) + "°";
       listitem.appendChild(deleteIcon);
       storedVals?.appendChild(listitem);
   
