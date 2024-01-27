@@ -57,6 +57,7 @@ const CompassComponent: Component = () => {
   };
 
   const requestOrientationPerm = async () => {
+    localStorage.clear()
     if (iOS()) {
       if (typeof requestPermission !== "function") return;
       const permissionRes = await requestPermission();
@@ -84,23 +85,36 @@ const CompassComponent: Component = () => {
   };
 
   const populateListLocal = () => {
-    for (let i = 0; i < localStorage.length; i++) {
-      if (localStorage.key(i)?.includes("compass")) { 
-        let listitem = document.createElement("li");
-        let deleteIcon = document.createElement("img");
-        deleteIcon.src = deleteImg;
-        deleteIcon.height = 20;
-        // @ts-ignore
-        listitem.innerHTML = localStorage.getItem(localStorage.key(i));
-        listitem.appendChild(deleteIcon);
-        storedVals?.appendChild(listitem);
-        // @ts-ignore
-        deleteIcon.addEventListener("click", () => {
-          deleteLS(localStorage.key(i)?.toString());
-        });
-      }
-    }
+    storedVals.innerHTML = ""; // Clear the content before populating
+  
+    // Get all localStorage keys that include "compass"
+    const compassKeys = Object.keys(localStorage).filter((key) =>
+      key.includes("compass")
+    );
+  
+    // Sort the keys based on the number after "compass-"
+    compassKeys.sort((a, b) => {
+      const numA = parseInt(a.replace("compass-", ""), 10);
+      const numB = parseInt(b.replace("compass-", ""), 10);
+      return numA - numB;
+    });
+  
+    // Populate the list
+    compassKeys.forEach((key) => {
+      const listitem = document.createElement("li");
+      const deleteIcon = document.createElement("img");
+      deleteIcon.src = deleteImg;
+      deleteIcon.height = 20;
+      listitem.innerHTML = localStorage.getItem(key);
+      listitem.appendChild(deleteIcon);
+      storedVals?.appendChild(listitem);
+  
+      deleteIcon.addEventListener("click", () => {
+        deleteLS(key);
+      });
+    });
   };
+  
 
   const deleteLS = (x: string) => {
     localStorage.removeItem(x);
@@ -109,7 +123,8 @@ const CompassComponent: Component = () => {
     populateListLocal();
   };
 
-  const saveOrientation = (event: DeviceOrientationEvent) => {
+  let keyCounter = 0;
+  const saveOrientation = () => {
     // @ts-ignore
     storedVals.replaceChildren();
 
@@ -118,12 +133,11 @@ const CompassComponent: Component = () => {
 
     if (!navigator.onLine) {
     } else {
-      localStorage.setItem(
-        "compass-" + localStorage.length.toString(),
-        COMPASS_ORIENTATION.toString(),
-      );
+      localStorage.setItem("compass-" + keyCounter.toString(), COMPASS_ORIENTATION.toString());
+      keyCounter++;
       populateListLocal();
     }
+    console.log(localStorage)
   };
 
   return (
