@@ -62,8 +62,8 @@ const CompassComponent: Component = () => {
       addEventListener(
         "deviceorientation",
         (event: DeviceOrientationEvent) => {
-          COMPASS_ORIENTATION = handleOrientationIOS(event);
-          compassBody.style.rotate = adjustRotation(COMPASS_ORIENTATION) + "deg";
+          COMPASS_ORIENTATION = adjustRotation(handleOrientationIOS(event));
+          compassBody.style.rotate = COMPASS_ORIENTATION + "deg";
         },
         false,
       );
@@ -72,8 +72,8 @@ const CompassComponent: Component = () => {
       addEventListener(
         "deviceorientationabsolute",
         (event: DeviceOrientationEvent) => {
-          COMPASS_ORIENTATION =handleOrientationAND(event);
-          compassBody.style.rotate = adjustRotation(COMPASS_ORIENTATION) + "deg";
+          COMPASS_ORIENTATION = adjustRotation(handleOrientationAND(event));
+          compassBody.style.rotate = COMPASS_ORIENTATION + "deg";
         },
         true,
       );
